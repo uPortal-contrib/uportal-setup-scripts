@@ -1,0 +1,9 @@
+#
+# Aliases for managing tomcat
+#
+# Note: Assumes you are in TOMCAT_HOME
+#
+
+alias start-tomcat="bin/startup.sh && tail -f logs/catalina.out"
+alias stop-tomcat="bin/shutdown.sh && tail -f logs/catalina.out"
+alias ps-tomcat="ps -ef | grep java | grep tomcat"
