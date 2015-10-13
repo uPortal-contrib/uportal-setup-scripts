@@ -7,3 +7,4 @@
 alias start-tomcat="bin/startup.sh && tail -f logs/catalina.out"
 alias stop-tomcat="bin/shutdown.sh && tail -f logs/catalina.out"
 alias ps-tomcat="ps -ef | grep java | grep tomcat"
+alias kill-tomcat="ps -ef | grep java | grep tomcat | cut -d ' ' -f 4,4 | xargs kill -9"
