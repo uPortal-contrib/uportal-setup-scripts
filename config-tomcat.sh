@@ -64,7 +64,7 @@ fi
 CONTEXT_NEW_LINE='<Context sessionCookiePath="/">'
 CONTEXT_UPDATED=`grep -Fx "${CONTEXT_NEW_LINE}" ${CTXT_FILE} | wc -l`
 if [ 1 -eq ${CONTEXT_UPDATED} ]; then
-    echo "${CTXT_FILE} is alrady updated with ${CONTEXT_NEW_LINE}"
+    echo "${CTXT_FILE} is already updated with ${CONTEXT_NEW_LINE}"
 else
     # Need to update, so make a backup if one doesn't exist
     CTXT_BACKUP=${CTXT_FILE}.bak
@@ -100,7 +100,7 @@ if [ -f ${SETENV_FILE} ]; then
     echo "Found ${SETENV_FILE} ..."
 else
     echo "Copying setenv.sh to ${SETENV_FILE} ..."
-    cp setenv.sh $SETENV_FILE
+    cp `dirname "$0"`/setenv.sh $SETENV_FILE
 fi
 cat ${SETENV_FILE}
 
