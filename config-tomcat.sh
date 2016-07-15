@@ -102,7 +102,7 @@ if [ ! -f ${SRVR_FILE} ]; then
 fi
 
 # is the line already updated?
-SERVER_NEW_LINE='<Connector port="8009" enableLookups="false" protocol="AJP/1.3" redirectPort="8443" />'
+SERVER_NEW_LINE='    <Connector port="8009" enableLookups="false" protocol="AJP/1.3" redirectPort="8443" />'
 SERVER_UPDATED=`grep -Fx "${SERVER_NEW_LINE}" ${SRVR_FILE} | wc -l`
 if [ 1 -eq ${SERVER_UPDATED} ]; then
     echo "${SRVR_FILE} is already updated with ${SERVER_NEW_LINE}"
@@ -122,13 +122,13 @@ else
         fi
     fi
     # Make the substitution
-    SERVER_OLD_LINE='<Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />'
+    SERVER_OLD_LINE='    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />'
     SERVER_IS_OLD=`grep -Fx "${SERVER_OLD_LINE}" ${SRVR_FILE} | wc -l`
     if [ 1 -eq ${SERVER_IS_OLD} ]; then
         echo "Updating ${SERVER_OLD_LINE} to ${SERVER_NEW_LINE} ..."
         sed -e "s:^${SERVER_OLD_LINE}\$:${SERVER_NEW_LINE}:" ${SRVR_BACKUP} > ${SRVR_FILE}
     else
-        echo "The value for <server> is not the expected value for ${SRVR_FILE}."
+        echo "The value for <Connector> is not the expected value for ${SRVR_FILE}."
     fi
 fi
 
