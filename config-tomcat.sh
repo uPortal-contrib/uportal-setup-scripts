@@ -22,7 +22,7 @@ SHARED_LOADER_NEW_LINE='shared.loader=${catalina.base}/shared/lib/*.jar'
 CAT_PROP_UPDATED=`grep -Fx ${SHARED_LOADER_NEW_LINE} ${CAT_PROP_FILE} | wc -l`
 if [ 1 -eq ${CAT_PROP_UPDATED} ]; then
     echo "${CAT_PROP_FILE} is already updated with ${SHARED_LOADER_NEW_LINE}"
-else    
+else
     # Need to update, so make a backup if one doesn't exist
     CAT_PROP_BACKUP=${CAT_PROP_FILE}.bak
     if [ ! -f ${CAT_PROP_BACKUP} ]; then
@@ -103,6 +103,24 @@ else
     cp `dirname "$0"`/setenv.sh $SETENV_FILE
 fi
 cat ${SETENV_FILE}
+
+echo
+echo -e "\t** Update ROOT/index.html"
+echo
+
+ROOT_INDEX_FILE=$1/webapps/ROOT/index.html
+echo "Copying root_index.html to ${ROOT_INDEX_FILE} ..."
+cp `dirname "$0"`/root_index.html $ROOT_INDEX_FILE
+cat ${ROOT_INDEX_FILE}
+
+echo
+echo -e "\t** Removing unneeded webapps: docs, examples, host-manager manager"
+echo
+
+RM_WEBAPPS=( docs examples host-manager manager )
+for RM_WEBAPP in ${RM_WEBAPPS[@]}; do
+    rm -Rf $1/webapps/$RM_WEBAPP
+done
 
 echo 
 echo "Done."
