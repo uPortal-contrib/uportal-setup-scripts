@@ -28,12 +28,14 @@ uPortal instance. A typical setup installs almost exclusively to a
 single directory. Activities requiring `root` access will be separated
 to support cases where such access is restricted.
 
-# `install-commands.sh` (as root)
+## Script Overview
+
+### `install-commands.sh` (as root)
 
 Install needed OS commands. The scripts will need `wget` to download
 packages and users will need `git` to sync with uPortal repository.
 
-# `create-portal-account.sh` (as root, server-only)
+### `create-portal-account.sh` (as root, server-only)
 Create Portal account, group and directory. Default name is `uportal`
 and the default directory is `/opt/uportal`. Reasoning for this location
 is to keep it out of `/home` which may have a limited partition size,
@@ -41,7 +43,7 @@ and out of system directories that may cause confusion.
 
 These values can be overridden in `config.properties`.
 
-# `download-tools.sh JDK_OS [download dir]` (as uPortal user)
+### `download-tools.sh JDK_OS [download dir]` (as uPortal user)
 Download the build tools and Tomcat from Apache Archives. Also downloaded
 is Java 8. To select the correct JDK a valid OS architecture needs to be
 selected. Valid values are ` linux-i586 linux-x64 macosx-x64 solaris-sparcv9 solaris-x64 windows-i586 windows-x64 `. 
