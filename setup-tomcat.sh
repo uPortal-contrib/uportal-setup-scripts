@@ -1,17 +1,46 @@
 #!/bin/bash
+#
+# Install Tomcat from package and configure for uPortal
+#
 
-# Expecting the first (and only) argument to be the path to Tomcat
-if [ ! -d $1 ]; then
-    echo "Argument should be the path to Tomcat"
-    exit 1
+# Source script properties
+. `dirname ${0}`/script.properties
+
+# Source versions to use
+. `dirname ${0}`/versions.properties
+
+# Source dev properties if found
+DEV_PROPS=$(dirname ${0})/dev.properties
+if [ -f $DEV_PROPS ]; then
+    . $DEV_PROPS
 fi
+
+# Determine Tomcat dir
+TC_PARENT="$TOMCAT_PARENT"
+if [ -d "$1" ]; then
+    TC_PARENT="$1"
+fi
+TOMCAT_HOME="${TC_PARENT}/tomcat"
+
+# Determine download dir
+DL_DIR="$DOWNLOAD_DIR"
+if [ -d "$2" ]; then
+    DL_DIR="$2"
+fi
+
+UNTAR="tar xzf"
+
+echo
+echo -e "\t** Installing Tomcat..."
+echo
+(cd $TC_PARENT && $UNTAR ${DL_DIR}/${TOMCAT_FILE} && ln -s ${TOMCAT_DIR} tomcat)
 
 echo
 echo -e "\t** Update conf/catalina.properties with shared.loader=shared/lib"
 echo
 
 # Test for catalina.properties
-CAT_PROP_FILE=$1/conf/catalina.properties
+CAT_PROP_FILE=${TOMCAT_HOME}/conf/catalina.properties
 if [ ! -f ${CAT_PROP_FILE} ]; then
     echo "Could not find ${CAT_PROP_FILE}"
     exit 1
@@ -53,7 +82,7 @@ echo -e "\t** Allow shared sessions in conf/context.xml"
 echo
 
 # Test for conf/context.xml
-CTXT_FILE=$1/conf/context.xml
+CTXT_FILE=${TOMCAT_HOME}/conf/context.xml
 if [ ! -f ${CTXT_FILE} ]; then
     echo "Could not find ${CTXT_FILE}"
     exit 1
@@ -95,7 +124,7 @@ echo -e "\t** Disable DNS lookups in conf/server.xml"
 echo
 
 # Test for conf/server.xml
-SRVR_FILE=$1/conf/server.xml
+SRVR_FILE=${TOMCAT_HOME}/conf/server.xml
 if [ ! -f ${SRVR_FILE} ]; then
     echo "Could not find ${SRVR_FILE}"
     exit 1
@@ -136,7 +165,7 @@ echo
 echo -e "\t** Check setenv.sh"
 echo
 
-SETENV_FILE=$1/bin/setenv.sh
+SETENV_FILE=${TOMCAT_HOME}/bin/setenv.sh
 if [ -f ${SETENV_FILE} ]; then
     echo "Found ${SETENV_FILE} ..."
 else
@@ -149,7 +178,7 @@ echo
 echo -e "\t** Update ROOT/index.html"
 echo
 
-ROOT_INDEX_FILE=$1/webapps/ROOT/index.html
+ROOT_INDEX_FILE=${TOMCAT_HOME}/webapps/ROOT/index.html
 echo "Copying root_index.html to ${ROOT_INDEX_FILE} ..."
 cp `dirname "$0"`/root_index.html $ROOT_INDEX_FILE
 cat ${ROOT_INDEX_FILE}
@@ -160,7 +189,7 @@ echo
 
 RM_WEBAPPS=( docs examples host-manager manager )
 for RM_WEBAPP in ${RM_WEBAPPS[@]}; do
-    rm -Rf $1/webapps/$RM_WEBAPP
+    rm -Rf ${TOMCAT_HOME}/webapps/$RM_WEBAPP
 done
 
 echo 
