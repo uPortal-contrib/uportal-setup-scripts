@@ -2,12 +2,19 @@
 
 # Add environment entries to Bash startup scripts for Java tools
 
-# Optional: parent directory to tools
-PARENT_DIR="/opt/uportal"
-if [ -d "$1" ]; then
-    PARENT_DIR="$1"
+# Source script properties
+. `dirname ${0}`/script.properties
+
+# Source dev properties if found
+DEV_PROPS=$(dirname ${0})/dev.properties
+if [ -f $DEV_PROPS ]; then
+    . $DEV_PROPS
 fi
-echo $PARENT_DIR
+
+# Use TOOLS_DIR script argument if provided
+if [ -d "$1" ]; then
+    TOOLS_DIR="$1"
+fi
 
 echo "Checking for Bash env properties ..."
 echo
@@ -23,7 +30,7 @@ fi
 JAVA_HOME_GREP=`grep "JAVA_HOME=" ~/.bashrc`
 if [ "" = "$JAVA_HOME_GREP" ]; then
     echo "JAVA_HOME not found. Adding to ~/.bashrc"
-    echo "export JAVA_HOME=$PARENT_DIR/java" >> ~/.bashrc
+    echo "export JAVA_HOME=$TOOLS_DIR/java" >> ~/.bashrc
 else
     echo $JAVA_HOME_GREP " found."
 fi
@@ -31,7 +38,7 @@ fi
 ANT_HOME_GREP=`grep "ANT_HOME=" ~/.bashrc`
 if [ "" = "$ANT_HOME_GREP" ]; then
     echo "ANT_HOME not found. Adding to ~/.bashrc"
-    echo "export ANT_HOME=$PARENT_DIR/ant" >> ~/.bashrc
+    echo "export ANT_HOME=$TOOLS_DIR/ant" >> ~/.bashrc
 else
     echo $ANT_HOME_GREP " found."
 fi
@@ -39,7 +46,7 @@ fi
 M2_HOME_GREP=`grep "M2_HOME=" ~/.bashrc`
 if [ "" = "$M2_HOME_GREP" ]; then
     echo "M2_HOME not found. Adding to ~/.bashrc"
-    echo "export M2_HOME=$PARENT_DIR/maven" >> ~/.bashrc
+    echo "export M2_HOME=$TOOLS_DIR/maven" >> ~/.bashrc
 else
     echo $M2_HOME_GREP " found."
 fi
@@ -47,7 +54,7 @@ fi
 TOMCAT_HOME_GREP=`grep "TOMCAT_HOME=" ~/.bashrc`
 if [ "" = "$TOMCAT_HOME_GREP" ]; then
     echo "TOMCAT_HOME not found. Adding to ~/.bashrc"
-    echo "export TOMCAT_HOME=$PARENT_DIR/tomcat" >> ~/.bashrc
+    echo "export TOMCAT_HOME=$TOMCAT_PARENT/tomcat" >> ~/.bashrc
 else
     echo $TOMCAT_HOME_GREP " found."
 fi

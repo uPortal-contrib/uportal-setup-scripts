@@ -1,0 +1,3 @@
+DOWNLOAD_DIR=~/Downloads
+TOOLS_DIR=~/opt
+TOMCAT_PARENT=~/tmp

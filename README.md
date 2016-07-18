@@ -72,3 +72,11 @@ but may be overridden in `dev.properties` as `$TOMCAT_PARENT` or
 specified as an argument. Directory where Tomcat package is stored can
 be specified by second argument. The script performs several small
 updates to Tomcat configuration files in preparation for uPortal.
+
+This script can be used to set up multiple Tomcats consistently in
+a developer setup. This is especially useful for consultants.
+
+### `config-bash-env.sh [tools_dir]` (as uPortal user)
+Configure `~/.bash_profile` and `~/.bashrc` with environment values
+and PATH. The tools and Tomcat are added if not detected; however,
+the script is limited and the bash scripts should be reviewed.
