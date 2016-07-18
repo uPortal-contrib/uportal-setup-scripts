@@ -51,10 +51,20 @@ These values can be overridden in `config.properties`.
 Download the build tools and Tomcat from Apache Archives. Also downloaded
 is Java 8. To select the correct JDK a valid OS architecture needs to be
 selected. Valid values are ` linux-i586 linux-x64 macosx-x64 solaris-sparcv9 solaris-x64 windows-i586 windows-x64 `. 
-The files are saved in PORTAL_HOME but that can be overridden
+The files are saved in `/opt/uportal` but that can be overridden
 by passing the directory as an argument to the script, or setting 
 `DOWNLOAD_DIR` in `dev.properties`.
 
 This script is very sensitive to version changes. Most changes can be
 managed in `versions.properties`, but a change to URLs may require
 a direct change.
+
+### `set-tools.sh JDK_OS [download dir]` (as uPortal user)
+Unzip tools and JDK to `/opt/uportal` or to `$TOOLS_DIR` if set in
+`dev.properties`. This script has the same arguments as
+`download-tools.sh` and should match.
+
+Note: while Tomcat is downloaded in `download-tools.sh` it is not
+set with this script. It is set up in the following script.
+
+
