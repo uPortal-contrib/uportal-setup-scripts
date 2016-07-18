@@ -6,9 +6,6 @@
 # Source script properties
 . `dirname ${0}`/script.properties
 
-# Source versions to use
-. `dirname ${0}`/versions.properties
-
 # Determine OS
 JDK_OS_LIST=" linux-i586 linux-x64 macosx-x64 solaris-sparcv9 solaris-x64 windows-i586 windows-x64 "
 JDK_OS=
@@ -20,8 +17,17 @@ else
     exit 1
 fi
 
+# Source versions to use
+. `dirname ${0}`/versions.properties
+
+# Source dev properties if found
+DEV_PROPS=$(dirname ${0})/dev.properties
+if [ -f $DEV_PROPS ]; then
+    . $DEV_PROPS
+fi
+
 # Determine download dir
-DL_DIR="$PORTAL_HOME"
+DL_DIR="$DOWNLOAD_DIR"
 if [ -d "$2" ]; then
     DL_DIR="$2"
 fi

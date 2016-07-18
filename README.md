@@ -22,6 +22,10 @@ rather than `root`. A typical setup installs the build tools to a local
 directory, native libraries are installed in a system directory, and 
 multiple Tomcats should be supported.
 
+To capture a developer environment, overrides for some script properties
+can be saved in `dev.properties`. See `dev.properties.sample` as an
+example.
+
 ## Dedicated Server
 Server assumptions are that the server or VM is focused on a single
 uPortal instance. A typical setup installs almost exclusively to a
@@ -48,7 +52,8 @@ Download the build tools and Tomcat from Apache Archives. Also downloaded
 is Java 8. To select the correct JDK a valid OS architecture needs to be
 selected. Valid values are ` linux-i586 linux-x64 macosx-x64 solaris-sparcv9 solaris-x64 windows-i586 windows-x64 `. 
 The files are saved in PORTAL_HOME but that can be overridden
-by passing the directory as an argument to the script.
+by passing the directory as an argument to the script, or setting 
+`DOWNLOAD_DIR` in `dev.properties`.
 
 This script is very sensitive to version changes. Most changes can be
 managed in `versions.properties`, but a change to URLs may require
