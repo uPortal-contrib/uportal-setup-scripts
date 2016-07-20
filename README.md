@@ -67,7 +67,9 @@ Unzip tools and JDK to `/opt/uportal` or to `$TOOLS_DIR` if set in
 Note: while Tomcat is downloaded in `download-tools.sh` it is not
 set with this script. It is set up in the following script.
 
-### `setup-tomcat.sh [tomcat_parent_dir [download_dir]]` (as uPortal user)Unzip Tomcat package in `tomcat_parent_dir` defaulting to `/opt/uportal` 
+### `setup-tomcat.sh [tomcat_parent_dir [download_dir]]` (as uPortal user)
+
+Unzip Tomcat package in `tomcat_parent_dir` defaulting to `/opt/uportal` 
 but may be overridden in `dev.properties` as `$TOMCAT_PARENT` or
 specified as an argument. Directory where Tomcat package is stored can
 be specified by second argument. The script performs several small
