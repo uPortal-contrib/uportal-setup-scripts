@@ -90,6 +90,7 @@ fi
 
 # is the line already updated?
 CONTEXT_NEW_LINE='<Context sessionCookiePath="/">'
+CONTEXT_BACKED_UP=0
 CONTEXT_UPDATED=`grep -Fx "${CONTEXT_NEW_LINE}" ${CTXT_FILE} | wc -l`
 if [ 1 -eq ${CONTEXT_UPDATED} ]; then
     echo "${CTXT_FILE} is already updated with ${CONTEXT_NEW_LINE}"
@@ -99,6 +100,7 @@ else
     if [ ! -f ${CTXT_BACKUP} ]; then
         echo "Copying ${CTXT_FILE} to ${CTXT_BACKUP}"
         cp ${CTXT_FILE} ${CTXT_BACKUP}
+        CONTEXT_BACKED_UP=1
     else
         # existing backup file, so make sure it matches
         diff ${CTXT_FILE} ${CTXT_BACKUP}> /dev/null 2>&1
@@ -106,6 +108,8 @@ else
             echo "${CTXT_FILE} differs from ${CTXT_BACKUP} ..."
             diff ${CTXT_FILE} ${CTXT_BACKUP}
             exit 1
+        else
+            CONTEXT_BACKED_UP=1
         fi
     fi
     # Make the substitution
@@ -117,6 +121,39 @@ else
     else
         echo "The value for <Context> is not the expected value for ${CTXT_FILE}."
     fi
+fi
+
+echo
+echo -e "\t** Increase resource cache size in conf/context.xml"
+echo
+
+# is the line already updated?
+CONTEXT_NEW_LINE='    <Resources cachingAllowed="true" cacheMaxSize="100000" \/>'
+CONTEXT_UPDATED=`grep -Fx "${CONTEXT_NEW_LINE}" ${CTXT_FILE} | wc -l`
+if [ 1 -eq ${CONTEXT_UPDATED} ]; then
+    echo "${CTXT_FILE} is already updated with ${CONTEXT_NEW_LINE}"
+else
+    # Need to update, so make a backup if one doesn't exist
+    CTXT_BACKUP=${CTXT_FILE}.bak
+    if [ ! -f ${CTXT_BACKUP} ]; then
+        echo "Copying ${CTXT_FILE} to ${CTXT_BACKUP}"
+        cp ${CTXT_FILE} ${CTXT_BACKUP}
+    elif [ ${CONTEXT_BACKED_UP} == 1 ]; then
+        echo "${CTXT_FILE} already backed up"
+    else
+        # existing backup file, so make sure it matches
+        diff ${CTXT_FILE} ${CTXT_BACKUP}> /dev/null 2>&1
+        if [ $? -ne 0 ]; then
+            echo "${CTXT_FILE} differs from ${CTXT_BACKUP} ..."
+            diff ${CTXT_FILE} ${CTXT_BACKUP}
+            exit 1
+        fi
+    fi
+    # Make the substitution
+    CONTEXT_CLOSE_LINE='<\/Context>'
+    echo "Inserting  ${CONTEXT_NEW_LINE} before ${CONTEXT_CLOSE_LINE} ..."
+    sed -i "/${CONTEXT_CLOSE_LINE}/i \
+    ${CONTEXT_NEW_LINE}" ${CTXT_FILE}
 fi
 
 echo
