@@ -23,14 +23,33 @@ directory, native libraries are installed in a system directory, and
 multiple Tomcats should be supported.
 
 To capture a developer environment, overrides for some script properties
-can be saved in `dev.properties`. See `dev.properties.sample` as an
-example.
+can be saved in `dev.properties`. See `dev.properties.sample`.
+
+```
+   cp dev.properties.sample dev.properties
+   vi dev.properties
+   sudo ./install-commands.sh
+   ./download-tools.sh linux-x64
+   ./set-tools.sh linux-x64
+   ./config-bash-env.sh
+   ./setup-tomcat.sh ~/work/my-dev
+   ./setup-tomcat.sh ~/work/proj1
+```
 
 ## Dedicated Server
 Server assumptions are that the server or VM is focused on a single
 uPortal instance. A typical setup installs almost exclusively to a
 single directory. Activities requiring `root` access will be separated
 to support cases where such access is restricted.
+
+```
+   sudo ./install-commands.sh
+   sudo ./create-portal-account.sh
+   ./download-tools.sh linux-x64
+   ./set-tools.sh linux-x64
+   ./config-bash-env.sh
+   ./setup-tomcat.sh
+```
 
 ## Script Overview
 
