@@ -20,6 +20,11 @@ fi
 # Source versions to use
 . `dirname ${0}`/versions.properties
 
+# Handle OSX file ending with 
+if [[ "macosx-x64" = "$JDK_OS" ]]; then
+    JDK_FILE=jdk-${JDK_VER}-${JDK_OS}.dmg
+fi
+
 # Source dev properties if found
 DEV_PROPS=$(dirname ${0})/dev.properties
 if [ -f $DEV_PROPS ]; then

@@ -25,6 +25,11 @@ if [ -f $DEV_PROPS ]; then
     . $DEV_PROPS
 fi
 
+# Handle OSX file ending with .dmg
+if [[ "macosx-x64" = "$JDK_OS" ]]; then
+    JDK_FILE=jdk-${JDK_VER}-${JDK_OS}.dmg
+fi
+
 # Determine download dir
 DL_DIR="$DOWNLOAD_DIR"
 if [ -d "$2" ]; then
@@ -32,6 +37,10 @@ if [ -d "$2" ]; then
 fi
 
 UNTAR="tar xzf"
+
+if [ ! -d "$TOOLS_DIR" ]; then
+    mkdir -p $TOOLS_DIR
+fi
 cd $TOOLS_DIR
 
 # Setup Ant
@@ -40,4 +49,15 @@ $UNTAR ${DL_DIR}/${ANT_FILE} && ln -s ${ANT_DIR} ant
 $UNTAR ${DL_DIR}/${MAVEN_FILE} && ln -s ${MAVEN_DIR} maven
 
 # Setup JDK
-$UNTAR ${DL_DIR}/${JDK_FILE} && ln -s ${JDK_DIR} java
+if [[ "macosx-x64" = "$JDK_OS" ]]; then
+    hdiutil attach "${DL_DIR}/${JDK_FILE}"
+    sudo installer -package "${JDK_PKG}" -target /
+    hdiutil detach "${JDK_VOL}"
+    echo ln -s `/usr/libexec/java_home -R` java
+    if [ -f java ]; then
+        rm java
+    fi
+    ln -s `/usr/libexec/java_home -R` java
+else
+    $UNTAR ${DL_DIR}/${JDK_FILE} && ln -s ${JDK_DIR} java
+fi
